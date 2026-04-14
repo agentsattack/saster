@@ -1,5 +1,7 @@
 # SASTER Taxonomy v1.0
 
+**Version 1.0 — April 2026**
+
 ## Tier 1 — Overt Deception (SASTER 1-10)
 
 Direct attacks that manipulate agent behavior through explicit injection or extraction. These are the patterns most security teams already test for. They are table stakes.

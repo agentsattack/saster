@@ -19,7 +19,7 @@ See [SASTER.md](SASTER.md) for the complete taxonomy with descriptions, detectio
 
 ## OWASP Mapping
 
-See [OWASP_MAPPING.md](OWASP_MAPPING.md) for mappings between SASTER patterns and OWASP AIVSS / Agentic Top 10 categories.
+See [OWASP_MAPPING.md](OWASP_MAPPING.md) for mappings between SASTER patterns and OWASP LLM Top 10 / Agentic Top 10 categories.
 
 ## Contributing
 

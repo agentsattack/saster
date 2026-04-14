@@ -23,7 +23,7 @@ SASTER patterns map to both the OWASP Top 10 for LLM Applications (2025) and the
 | 13 | Malicious Compliance | — | ASI10: Rogue Agents |
 | 14 | Gradual Intent Erosion | LLM01: Prompt Injection | ASI01: Agent Goal Hijack |
 | 15 | Selective Omission | LLM09: Misinformation | ASI10: Rogue Agents |
-| 16 | Confidence Miscalibration | LLM09: Misinformation | — |
+| 16 | Confidence Miscalibration | LLM09: Misinformation | ASI09: Human-Agent Trust Exploitation |
 | 17 | Intent Alteration (EFT) | — | ASI10: Rogue Agents |
 | 18 | Semantic Recasting (EFT) | — | ASI10: Rogue Agents |
 | 19 | Contradiction Denial (EFT) | LLM09: Misinformation | ASI10: Rogue Agents |
