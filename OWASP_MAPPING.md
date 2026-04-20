@@ -36,6 +36,9 @@ SASTER patterns map to both the OWASP Top 10 for LLM Applications (2025) and the
 | 26 | Recon-Gated Injection (RGI) | LLM01: Prompt Injection | ASI01: Agent Goal Hijack |
 | 27 | Detection Layer Injection (DLI) | LLM01: Prompt Injection | ASI02: Tool Misuse & Exploitation |
 | 28 | Salience Suppression Exfil (SSE) | LLM01: Prompt Injection | ASI01: Agent Goal Hijack |
+| 29 | Stylistic Distribution Shift | LLM01: Prompt Injection | ASI01: Agent Goal Hijack |
+| 30 | Temporal Anchoring | LLM09: Misinformation | ASI06: Memory & Context Poisoning |
+| 31 | Compositional Capability Emergence | LLM08: Excessive Agency | ASI07: Insecure Inter-Agent Communication |
 
 ## Coverage Analysis
 

@@ -1,6 +1,6 @@
 # SASTER — Systematic Agent Security Threat Evaluation and Rating
 
-A classification framework for AI agent attack patterns. 28 patterns across 4 tiers covering overt injection, behavioral manipulation, epistemic exploitation, and infrastructure attacks.
+A classification framework for AI agent attack patterns. 31 patterns across 4 tiers covering overt injection, behavioral manipulation, epistemic exploitation, and infrastructure attacks.
 
 SASTER provides the shared vocabulary that practitioners need to describe, test for, and defend against AI agent threats. It complements OWASP's Top 10 for LLM Applications and Top 10 for Agentic Applications by providing specific, testable attack techniques rather than risk categories.
 
@@ -8,9 +8,9 @@ SASTER provides the shared vocabulary that practitioners need to describe, test 
 
 | Tier | Patterns | Focus |
 |------|----------|-------|
-| Tier 1: Overt Deception | SASTER 1-10 | Direct prompt injection and extraction |
-| Tier 2: Correctly Wrong | SASTER 11-16 | Behavioral manipulation producing harmful-but-compliant outputs |
-| Tier 3: Epistemic Exploitation | SASTER 17-24 | Tool trust, belief manipulation, and ontological attacks |
+| Tier 1: Overt Deception | SASTER 1-10, 29 | Direct prompt injection and extraction |
+| Tier 2: Correctly Wrong | SASTER 11-16, 30 | Behavioral manipulation producing harmful-but-compliant outputs |
+| Tier 3: Epistemic Exploitation | SASTER 17-24, 31 | Tool trust, belief manipulation, and ontological attacks |
 | Tier 4: Infrastructure & Recon | SASTER 25-28 | Resource exhaustion, fingerprinting, detection evasion |
 
 ## Full Taxonomy
