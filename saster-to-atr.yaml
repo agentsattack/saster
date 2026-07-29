@@ -1,0 +1,294 @@
+# SASTER → Agent-Threat-Rules (ATR) crosswalk
+#
+# Maps each SASTER pattern to matching ATR rule ID(s), or marks it a gap
+# with a specific justification. The gaps are the point: they are the
+# additivity argument for the OWASP submission — where SASTER describes a
+# threat ATR does not yet encode as a detection rule.
+
+metadata:
+  saster_version: "1.1"
+  atr_source: "https://github.com/Agent-Threat-Rule/agent-threat-rules"
+  atr_pinned_commit: "d7a878815e1797ac4eda386a17f931c25568df64"
+  generated: "2026-07-28"
+  method: >
+    ATR rule index built from the repository tree (rules/*.yaml; 768
+    published rules across 10 categories). Each rule's ID and slug are
+    encoded in its filename (ATR-2026-NNNNN-<slug>.yaml), which is a
+    stable, machine-readable index. Matches were assigned by semantic
+    correspondence between the SASTER pattern's attack mechanism and the
+    ATR rule slug/category; a human should spot-check the partial matches.
+  notes:
+    - >
+      The brief's "425 rules" figure is stale: rules/ currently holds 768
+      published rules (proposals/ holds thousands more, not counted here).
+    - >
+      "partial" notes flag matches where ATR covers a related mechanism or
+      the same outcome but not the exact SASTER framing; they are counted
+      as matches, not gaps.
+    - >
+      ATR already cross-maps to OWASP LLM/Agentic, MITRE ATLAS, SAFE-MCP,
+      and NIST AI RMF (docs/*-MAPPING.md), so a SASTER↔ATR match inherits
+      those mappings transitively.
+
+patterns:
+  # ----- Tier 1 — Overt Deception (dense ATR coverage) -----
+  - saster: SASTER-1
+    name: Instruction Injection
+    tier: 1
+    atr_rules:
+      - {id: ATR-2026-00001, slug: direct-prompt-injection, category: prompt-injection}
+  - saster: SASTER-2
+    name: Document Injection
+    tier: 1
+    atr_rules:
+      - {id: ATR-2026-00002, slug: indirect-prompt-injection, category: prompt-injection}
+  - saster: SASTER-3
+    name: Role Hijacking
+    tier: 1
+    atr_rules:
+      - {id: ATR-2026-00104, slug: persona-hijacking, category: prompt-injection}
+      - {id: ATR-2026-00229, slug: roleplay-jailbreak, category: prompt-injection}
+  - saster: SASTER-4
+    name: Persona Override
+    tier: 1
+    atr_rules:
+      - {id: ATR-2026-00242, slug: persona-jailbreak, category: prompt-injection}
+      - {id: ATR-2026-00245, slug: malicious-persona, category: prompt-injection}
+  - saster: SASTER-5
+    name: Context Window Poisoning
+    tier: 1
+    atr_rules:
+      - {id: ATR-2026-01005, slug: many-shot-repetition-override, category: prompt-injection}
+      - {id: ATR-2026-00125, slug: context-poisoning-compaction, category: skill-compromise}
+  - saster: SASTER-6
+    name: System Prompt Extraction
+    tier: 1
+    atr_rules:
+      - {id: ATR-2026-00514, slug: system-prompt-extraction, category: context-exfiltration}
+      - {id: ATR-2026-00020, slug: system-prompt-leak, category: context-exfiltration}
+  - saster: SASTER-7
+    name: Tool Name Disclosure
+    tier: 1
+    gap: true
+    justification: >
+      ATR treats tool metadata as an injection vector (tool-description
+      injection, tool-poisoning) but has no rule for enumeration/disclosure
+      of tool names or signatures as an extraction target.
+  - saster: SASTER-8
+    name: Multi-Modal Injection
+    tier: 1
+    atr_rules:
+      - {id: ATR-2026-00412, slug: figstep-image-list-multimodal-jailbreak, category: prompt-injection}
+  - saster: SASTER-9
+    name: Serialization Attacks
+    tier: 1
+    atr_rules:
+      - {id: ATR-2026-00084, slug: structured-data-injection, category: prompt-injection}
+      - {id: ATR-2026-00280, slug: policy-puppetry-xml-injection, category: prompt-injection}
+  - saster: SASTER-10
+    name: Encoding Bypass
+    tier: 1
+    atr_rules:
+      - {id: ATR-2026-00080, slug: encoding-evasion, category: prompt-injection}
+      - {id: ATR-2026-00256, slug: base-n-encoding-jailbreak, category: prompt-injection}
+
+  # ----- Tier 2 — Correctly Wrong (sparse; behavioral failures) -----
+  - saster: SASTER-11
+    name: Specification Drift
+    tier: 2
+    atr_rules:
+      - {id: ATR-2026-00552, slug: goal-drift-after-pressure-injection, category: agent-manipulation}
+      - {id: ATR-2026-00041, slug: scope-creep, category: privilege-escalation}
+    note: >
+      partial — ATR frames drift as pressure-induced goal drift / scope
+      creep; SASTER-11 is conversational reinterpretation of the mandate.
+  - saster: SASTER-12
+    name: Proxy Optimization
+    tier: 2
+    gap: true
+    justification: >
+      No ATR rule covers Goodhart-style optimization of a measurable proxy
+      over the true objective; ATR rules are input-driven attack techniques,
+      not emergent optimization failures.
+  - saster: SASTER-13
+    name: Malicious Compliance
+    tier: 2
+    gap: true
+    justification: >
+      No ATR rule for letter-vs-spirit compliance (output technically within
+      policy that achieves a prohibited outcome); ATR classifies by
+      injection/exfil mechanism, not by policy-interpretation failure.
+  - saster: SASTER-14
+    name: Gradual Intent Erosion
+    tier: 2
+    atr_rules:
+      - {id: ATR-2026-00093, slug: gradual-escalation, category: prompt-injection}
+    note: >
+      partial — ATR's gradual-escalation captures the multi-turn
+      incremental-escalation shape; SASTER-14 is its intent-drift framing.
+  - saster: SASTER-15
+    name: Selective Omission
+    tier: 2
+    gap: true
+    justification: >
+      No ATR rule for the agent dropping safety caveats, warnings, or
+      uncertainty markers from otherwise-correct output; ATR has no
+      "omission of expected content" detection class.
+  - saster: SASTER-16
+    name: Confidence Miscalibration
+    tier: 2
+    gap: true
+    justification: >
+      No ATR rule for overconfident presentation of uncertain output;
+      calibration is a truthfulness/quality property outside ATR's
+      attack-technique scope.
+  - saster: SASTER-29
+    name: Stylistic Distribution Shift
+    tier: 2
+    gap: true
+    justification: >
+      ATR has poem-framed content jailbreaks (e.g. ATR-2026-00390
+      explicit-sexual-content-poem-request) as a vector, but no rule for
+      stylistic out-of-distribution output as a role-conformance failure.
+  # ----- Tier 3 — Epistemic Exploitation (largely novel; gap-dense) -----
+  - saster: SASTER-17
+    name: Intent Alteration Without Disclosure
+    tier: 3
+    gap: true
+    justification: >
+      No ATR rule for the model silently rewriting the user's request to its
+      own interpretation without disclosure; ATR injection rules cover
+      attacker-supplied instructions, not model-initiated reinterpretation.
+  - saster: SASTER-18
+    name: Semantic Recasting
+    tier: 3
+    gap: true
+    justification: >
+      ATR-2026-00133 paraphrase-injection is attacker-side evasion; SASTER-18
+      is model-side loss of the user's conceptual framework into a generic
+      training-data frame — the opposite direction. No ATR equivalent.
+  - saster: SASTER-19
+    name: Contradiction Denial
+    tier: 3
+    gap: true
+    justification: >
+      ATR-2026-00106 schema-description-contradiction is tool-schema
+      inconsistency; no ATR rule for the model denying self-contradiction
+      across turns.
+  - saster: SASTER-20
+    name: Alteration Denial / Gaslighting
+    tier: 3
+    gap: true
+    justification: >
+      No ATR rule for the model denying it modified content it demonstrably
+      changed.
+  - saster: SASTER-21
+    name: MCP Tool Trust Exploitation
+    tier: 3
+    atr_rules:
+      - {id: ATR-2026-00550, slug: untrusted-retrieval-to-privileged-tool, category: prompt-injection}
+    note: >
+      partial — ATR covers untrusted tool output flowing to a privileged
+      action; SASTER-21 is the agent treating tool output as ground truth.
+  - saster: SASTER-22
+    name: Cross-Model Compositional Weaponization
+    tier: 3
+    gap: true
+    justification: >
+      ATR's DRA reconstruction rules (ATR-2026-00278, -00408) reassemble
+      harmful content within a single model; SASTER-22 is chaining
+      individually-safe calls across models — not represented.
+  - saster: SASTER-23
+    name: Self-Fulfilling Tool Belief
+    tier: 3
+    atr_rules:
+      - {id: ATR-2026-01301, slug: tool-description-exclusive-tool-override, category: tool-poisoning}
+      - {id: ATR-2026-00579, slug: mcp-tool-description-line-jumping-injection, category: prompt-injection}
+    note: >
+      partial — ATR tool-description-injection rules reshape agent behavior
+      via crafted descriptions; SASTER-23 is the self-reinforcing belief loop.
+  - saster: SASTER-24
+    name: Just-in-Time Ontological Reframing (JiTOR)
+    tier: 3
+    atr_rules:
+      - {id: ATR-2026-00581, slug: mcp-tool-rug-pull-post-approval-redefinition, category: tool-poisoning}
+    note: >
+      strong — tool response redefines the operational frame after approval,
+      which is JiTOR's mid-conversation redefinition.
+  - saster: SASTER-30
+    name: Temporal Anchoring
+    tier: 3
+    gap: true
+    justification: >
+      No ATR rule for false-temporal-anchor attacks (fabricated "you told me
+      yesterday" prior-session claims inducing hallucinated confirmation).
+  - saster: SASTER-31
+    name: Compositional Capability Emergence
+    tier: 3
+    gap: true
+    justification: >
+      No ATR rule for emergent capability from composing individually-safe
+      capabilities via bridge variables / shared context; ATR's nearest
+      (DRA reconstruction) is single-model content reconstruction, not
+      cross-capability composition.
+
+  # ----- Tier 4 — Infrastructure & Reconnaissance -----
+  - saster: SASTER-25
+    name: Resource Exhaustion Attack (REA)
+    tier: 4
+    atr_rules:
+      - {id: ATR-2026-00051, slug: resource-exhaustion, category: excessive-autonomy}
+      - {id: ATR-2026-01760, slug: dos-forced-infinite-output-token-flood, category: model-abuse}
+  - saster: SASTER-26
+    name: Recon-Gated Injection (RGI)
+    tier: 4
+    atr_rules:
+      - {id: ATR-2026-00082, slug: fingerprint-evasion, category: prompt-injection}
+      - {id: ATR-2026-00146, slug: env-var-existence-probe, category: context-exfiltration}
+    note: >
+      partial — ATR has fingerprinting/probing primitives; SASTER-26 is the
+      recon→technique-selection gating composition, which ATR does not encode.
+  - saster: SASTER-27
+    name: Detection Layer Injection (DLI)
+    tier: 4
+    gap: true
+    justification: >
+      ATR has content-classifier evasion (e.g. ATR-2026-01843
+      drug-dealing-detection-evasion-spelling) but no rule for attacking the
+      scanner/quarantine classifier itself as the target (EchoGram-style
+      verdict flipping, the defender's dilemma).
+  - saster: SASTER-28
+    name: Salience Suppression Exfiltration (SSE)
+    tier: 4
+    gap: true
+    justification: >
+      ATR has many history/context exfiltration rules (the outcome, e.g.
+      ATR-2026-00431) but none keyed on the salience-suppression technique —
+      subordinating an extraction goal inside low-stakes creative framing to
+      reduce classifier attention.
+  - saster: SASTER-33
+    name: Context Stripping
+    tier: 4
+    gap: true
+    justification: >
+      No ATR rule for reconnaissance by stripping contextual scaffolding
+      (system markers, persona cues) to map which context elements the agent
+      depends on for policy enforcement; ATR has no context-absence /
+      turn-shape-anomaly detection class.
+
+# SASTER-32 is reserved and intentionally omitted.
+
+summary:
+  patterns_total: 32          # 1–31, 33 (SASTER-32 reserved, excluded)
+  matched: 16
+  gaps: 16
+  by_tier:
+    tier_1_overt_deception:      {patterns: 10, matched: 9, gaps: 1}   # gap: 7
+    tier_2_correctly_wrong:      {patterns: 7,  matched: 2, gaps: 5}   # gaps: 12,13,15,16,29
+    tier_3_epistemic:            {patterns: 10, matched: 3, gaps: 7}   # matched: 21,23,24
+    tier_4_infra_and_recon:      {patterns: 5,  matched: 2, gaps: 3}   # gaps: 27,28,33
+  reading: >
+    Coverage is dense in Tier 1 (overt injection/extraction, which ATR
+    encodes exhaustively) and sparse in Tiers 2–3 (behavioral and epistemic
+    failures). The 16 gaps — concentrated in the "correctly wrong" and
+    epistemic tiers — are what SASTER contributes beyond ATR's rule set.
