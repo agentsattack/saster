@@ -25,6 +25,48 @@ See [SASTER.md](SASTER.md) for the complete taxonomy with descriptions, detectio
 
 See [OWASP_MAPPING.md](OWASP_MAPPING.md) for mappings between SASTER patterns and OWASP LLM Top 10 / Agentic Top 10 categories.
 
+## Reference-implementation coverage
+
+SASTER is implementation-independent — a pattern is defined by its attack mechanism and detection signal, not by any one tool. The table below records coverage in the open-source reference harness [`saster-harness`](https://github.com/agentsattack/saster-harness) as of v0.4.x: **13 detectors covering 9 of the 32 patterns.** The remaining 23 are specification-only (defined here, no reference detector yet). Other implementations may cover a different subset.
+
+| # | Pattern | Tier | Detector? | Mode | Note |
+|---|---|---|:---:|---|---|
+| 1 | Instruction Injection | 1 | — | — | specification only |
+| 2 | Document Injection | 1 | — | — | specification only |
+| 3 | Role Hijacking | 1 | — | — | specification only |
+| 4 | Persona Override | 1 | — | — | specification only |
+| 5 | Context Window Poisoning | 1 | — | — | specification only |
+| 6 | System Prompt Extraction | 1 | — | — | specification only |
+| 7 | Tool Name Disclosure | 1 | — | — | specification only |
+| 8 | Multi-Modal Injection | 1 | — | — | specification only |
+| 9 | Serialization Attacks | 1 | — | — | specification only |
+| 10 | Encoding Bypass | 1 | — | — | specification only |
+| 11 | Specification Drift | 2 | ✓ | induced | induced-only — cannot run against a static corpus |
+| 12 | Proxy Optimization | 2 | — | — | specification only |
+| 13 | Malicious Compliance | 2 | — | — | specification only |
+| 14 | Gradual Intent Erosion | 2 | ✓ | induced | induced-only — cannot run against a static corpus |
+| 15 | Selective Omission | 2 | — | — | specification only |
+| 16 | Confidence Miscalibration | 2 | — | — | specification only |
+| 17 | Intent Alteration Without Disclosure (EFT) | 3 | — | — | specification only |
+| 18 | Semantic Recasting (EFT) | 3 | ✓ | passive + induced + multi-turn | |
+| 19 | Contradiction Denial (EFT) | 3 | — | — | specification only |
+| 20 | Alteration Denial / Gaslighting (EFT) | 3 | — | — | specification only |
+| 21 | MCP Tool Trust Exploitation | 3 | — | — | specification only |
+| 22 | Cross-Model Compositional Weaponization | 3 | — | — | specification only |
+| 23 | Self-Fulfilling Tool Belief | 3 | — | — | specification only |
+| 24 | Just-in-Time Ontological Reframing (JiTOR) | 3 | ✓ | passive + induced | |
+| 25 | Resource Exhaustion Attack (REA) | 4 | — | — | specification only |
+| 26 | Recon-Gated Injection (RGI) | 4 | ✓ | passive + induced | |
+| 27 | Detection Layer Injection (DLI) | 4 | ✓ | passive | |
+| 28 | Salience Suppression Exfiltration (SSE) | 4 | ✓ | passive | |
+| 29 | Stylistic Distribution Shift | 2 | — | — | specification only |
+| 30 | Temporal Anchoring | 3 | — | — | specification only |
+| 31 | Compositional Capability Emergence | 3 | ✓ | passive | |
+| 32 | *(reserved)* | — | — | — | reserved; not assigned |
+| 33 | Context Stripping | 4 | ✓ | passive | |
+
+Covered set: **11, 14, 18, 24, 26, 27, 28, 31, 33**. SASTER-11 and SASTER-14 are induced-only (active live-agent probes, no passive detector) and therefore cannot run against a static/recorded corpus.
+
 ## Contributing
 
 SASTER is a living taxonomy. Attack patterns evolve as agent architectures change. To propose a new pattern or refine an existing one, open an issue or pull request.
